@@ -6,20 +6,21 @@ import java.util.List;
 
 public class MazePanel extends JPanel {
     private final List<Node> allNodes;
-    private final Node start, goal;
+    private Node start, goal;
     private final int rows, cols;
     private List<Node> path;
     private final boolean[][] obstacles; // 2D array to track obstacles
+    private String currentAction = "Place Obstacles"; // Default action
 
     public MazePanel(List<Node> allNodes, Node start, Node goal, int rows, int cols) {
         this.allNodes = allNodes;
-        this.start = start;
-        this.goal = goal;
+        this.start = start; // Assign to instance variable
+        this.goal = goal;   // Assign to instance variable
         this.rows = rows;
         this.cols = cols;
         this.obstacles = new boolean[rows][cols];
 
-        // Add mouse listener to toggle obstacles
+        // Add mouse listener to handle clicks based on the current action
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -28,18 +29,42 @@ public class MazePanel extends JPanel {
                 int x = e.getX() / cellWidth;
                 int y = e.getY() / cellHeight;
 
-                // Toggle obstacle, but don't allow start or goal to be obstacles
-                if (!(start.x == x && start.y == y) && !(goal.x == x && goal.y == y)) {
-                    obstacles[x][y] = !obstacles[x][y];
-                    Node node = findNode(allNodes, x, y);
-                    if (node != null) {
-                        node.setObstacle(obstacles[x][y]); // Update the Node's obstacle status
-                        System.out.println("Obstacle toggled at: (" + x + ", " + y + ") -> " + obstacles[x][y]);
+                if (x >= 0 && x < cols && y >= 0 && y < rows) {
+                    switch (currentAction) {
+                        case "Place Obstacles":
+                            if (!(MazePanel.this.start.x == x && MazePanel.this.start.y == y) &&
+                                !(MazePanel.this.goal.x == x && MazePanel.this.goal.y == y)) {
+                                obstacles[x][y] = !obstacles[x][y];
+                                Node node = findNode(allNodes, x, y);
+                                if (node != null) {
+                                    node.setObstacle(obstacles[x][y]);
+                                    System.out.println("Obstacle toggled at: (" + x + ", " + y + ") -> " + obstacles[x][y]);
+                                }
+                                repaint();
+                            }
+                            break;
+                        case "Set Start":
+                            if (!obstacles[x][y] && !(MazePanel.this.goal.x == x && MazePanel.this.goal.y == y)) {
+                                MazePanel.this.start = findNode(allNodes, x, y);
+                                System.out.println("Start node set to: (" + x + ", " + y + ")");
+                                repaint();
+                            }
+                            break;
+                        case "Set End":
+                            if (!obstacles[x][y] && !(MazePanel.this.start.x == x && MazePanel.this.start.y == y)) {
+                                MazePanel.this.goal = findNode(allNodes, x, y);
+                                System.out.println("End node set to: (" + x + ", " + y + ")");
+                                repaint();
+                            }
+                            break;
                     }
-                    repaint();
                 }
             }
         });
+    }
+
+    public void setAction(String action) {
+        this.currentAction = action;
     }
 
     public void setPath(List<Node> path) {
@@ -70,7 +95,7 @@ public class MazePanel extends JPanel {
                 obstacles[x][y] = true;
                 Node node = findNode(allNodes, x, y);
                 if (node != null) {
-                    node.setObstacle(true); // Update the Node's obstacle status
+                    node.setObstacle(true);
                     System.out.println("Obstacle set at: (" + x + ", " + y + ")");
                 }
             }
@@ -78,12 +103,16 @@ public class MazePanel extends JPanel {
         repaint();
     }
 
-    public int getRows() {
-        return rows;
-    }
-
-    public int getCols() {
-        return cols;
+    public void clearObstacles() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                obstacles[i][j] = false;
+            }
+        }
+        for (Node node : allNodes) {
+            node.setObstacle(false);
+        }
+        repaint();
     }
 
     @Override
@@ -97,7 +126,6 @@ public class MazePanel extends JPanel {
             int x = node.x * cellWidth;
             int y = node.y * cellHeight;
 
-            // Draw obstacles
             if (obstacles[node.x][node.y]) {
                 g.setColor(Color.BLACK);
                 g.fillRect(x, y, cellWidth, cellHeight);
@@ -128,7 +156,6 @@ public class MazePanel extends JPanel {
         }
     }
 
-    // Helper method to find a node by its coordinates
     private Node findNode(List<Node> allNodes, int x, int y) {
         for (Node node : allNodes) {
             if (node.x == x && node.y == y) {
@@ -138,20 +165,19 @@ public class MazePanel extends JPanel {
         return null;
     }
 
-    // Method to clear all obstacles
-    public void clearObstacles() {
-        // Clear the obstacles array
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                obstacles[i][j] = false; // Clear the obstacle in the grid
-            }
-        }
+    public int getRows() {
+        return rows;
+    }
     
-        // Update the Node objects to reflect the cleared obstacles
-        for (Node node : allNodes) {
-            node.setObstacle(false); // Assuming Node has a setObstacle method
-        }
+    public int getCols() {
+        return cols;
+    }
+
+    public Node getStart() {
+        return start;
+    }
     
-        repaint(); // Refresh the panel to reflect changes
+    public Node getGoal() {
+        return goal;
     }
 }

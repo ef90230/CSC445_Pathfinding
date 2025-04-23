@@ -18,16 +18,25 @@ public class Main {
             // Create the MazePanel
             MazePanel mazePanel = new MazePanel(allNodes, start, goal, 10, 10); // Updated grid size
 
+            // Create a dropdown menu for selecting actions
+            String[] options = {"Place Obstacles", "Set Start", "Set End"};
+            JComboBox<String> actionSelector = new JComboBox<>(options);
+            actionSelector.addActionListener(_ -> {
+                String selectedAction = (String) actionSelector.getSelectedItem();
+                mazePanel.setAction(selectedAction); // Update the action in MazePanel
+                System.out.println("Selected action: " + selectedAction);
+            });
+
             // Create buttons and add them to the frame
             JButton aStarButton = new JButton("Start A*");
             aStarButton.addActionListener(_ -> {
-                List<Node> path = AStar.aStar(start, goal, allNodes, mazePanel);
+                List<Node> path = AStar.aStar(mazePanel, allNodes);
                 mazePanel.setPath(path);
             });
 
             JButton dijkstraButton = new JButton("Start Dijkstra");
             dijkstraButton.addActionListener(_ -> {
-                List<Node> path = Dijkstra.dijkstra(start, goal, allNodes, mazePanel);
+                List<Node> path = Dijkstra.dijkstra(mazePanel, allNodes);
                 mazePanel.setPath(path);
             });
 
@@ -45,6 +54,7 @@ public class Main {
 
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout());
+            buttonPanel.add(actionSelector);
             buttonPanel.add(aStarButton);
             buttonPanel.add(dijkstraButton);
             buttonPanel.add(resetPathButton);
