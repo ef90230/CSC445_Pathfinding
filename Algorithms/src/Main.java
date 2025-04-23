@@ -4,54 +4,51 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        // Create a grid of nodes (5x5 for simplicity)
-        List<Node> allNodes = createGrid(5, 5);
+        // Create a grid of nodes (10x10 for larger grid)
+        List<Node> allNodes = createGrid(10, 10);
         Node start = allNodes.get(0); // Starting node
         Node goal = allNodes.get(allNodes.size() - 1); // Goal node
-
-        // Set obstacles manually
-        int[][] obstacleCoordinates = {
-            {1, 1}, {1, 2}, {1, 3}, // Row 1 obstacles
-            {2, 3}, {3, 3}, {4, 3}  // Column 3 obstacles
-        };
 
         // Create the JFrame
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Maze Visualization with Obstacles");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(700, 700);
+            frame.setSize(800, 800); // Adjust frame size for larger grid
 
             // Create the MazePanel
-            MazePanel mazePanel = new MazePanel(allNodes, start, goal, 5, 5);
-            mazePanel.setObstaclesManually(obstacleCoordinates); // Set obstacles in the MazePanel
+            MazePanel mazePanel = new MazePanel(allNodes, start, goal, 10, 10); // Updated grid size
 
-            // Create a button to start the A* algorithm
+            // Create buttons and add them to the frame
             JButton aStarButton = new JButton("Start A*");
             aStarButton.addActionListener(_ -> {
                 List<Node> path = AStar.aStar(start, goal, allNodes, mazePanel);
-                mazePanel.setPath(path); // Update the path in the MazePanel
+                mazePanel.setPath(path);
             });
 
-            // Create a button to start Dijkstra's algorithm
             JButton dijkstraButton = new JButton("Start Dijkstra");
             dijkstraButton.addActionListener(_ -> {
                 List<Node> path = Dijkstra.dijkstra(start, goal, allNodes, mazePanel);
-                mazePanel.setPath(path); // Update the path in the MazePanel
+                mazePanel.setPath(path);
             });
 
-            // Create a reset button to clear only the path
-            JButton resetButton = new JButton("Reset");
-            resetButton.addActionListener(_ -> {
+            JButton resetPathButton = new JButton("Reset Path");
+            resetPathButton.addActionListener(_ -> {
                 mazePanel.setPath(null); // Clear the path only
                 System.out.println("Path cleared, obstacles remain intact.");
             });
 
-            // Add components to the frame
+            JButton resetObstaclesButton = new JButton("Reset Obstacles");
+            resetObstaclesButton.addActionListener(_ -> {
+                mazePanel.clearObstacles(); // Clear all obstacles
+                System.out.println("All obstacles cleared.");
+            });
+
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout());
             buttonPanel.add(aStarButton);
             buttonPanel.add(dijkstraButton);
-            buttonPanel.add(resetButton);
+            buttonPanel.add(resetPathButton);
+            buttonPanel.add(resetObstaclesButton);
 
             frame.setLayout(new BorderLayout());
             frame.add(mazePanel, BorderLayout.CENTER);

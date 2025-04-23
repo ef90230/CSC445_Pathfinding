@@ -137,4 +137,21 @@ public class MazePanel extends JPanel {
         }
         return null;
     }
+
+    // Method to clear all obstacles
+    public void clearObstacles() {
+        // Clear the obstacles array
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                obstacles[i][j] = false; // Clear the obstacle in the grid
+            }
+        }
+    
+        // Update the Node objects to reflect the cleared obstacles
+        for (Node node : allNodes) {
+            node.setObstacle(false); // Assuming Node has a setObstacle method
+        }
+    
+        repaint(); // Refresh the panel to reflect changes
+    }
 }
