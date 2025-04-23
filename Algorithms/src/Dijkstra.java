@@ -3,7 +3,10 @@ import java.util.*;
 public class Dijkstra {
     static final int INF = Integer.MAX_VALUE;
 
-    public static List<Node> dijkstra(Node start, Node goal, List<Node> allNodes, MazePanel mazePanel) {
+    public static List<Node> dijkstra(MazePanel mazePanel, List<Node> allNodes) {
+        Node start = mazePanel.getStart(); // Get the current start node from MazePanel
+        Node goal = mazePanel.getGoal();   // Get the current goal node from MazePanel
+
         PriorityQueue<Node> openSet = new PriorityQueue<>(Comparator.comparingInt(node -> node.g));
         Set<Node> visited = new HashSet<>();
 
@@ -63,7 +66,7 @@ public class Dijkstra {
     // Get neighbors of the current node
     private static List<Node> getNeighbors(Node node, List<Node> allNodes, MazePanel mazePanel) {
         List<Node> neighbors = new ArrayList<>();
-        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Right, Down, Left, Up
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}, {1, 1}, {-1, -1}, {1, -1}, {-1, 1}}; // Right, Down, Left, Up, Diagonal directions
 
         for (int[] dir : directions) {
             int newX = node.x + dir[0];
