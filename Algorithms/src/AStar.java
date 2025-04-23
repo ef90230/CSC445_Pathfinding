@@ -41,8 +41,9 @@ public class AStar {
                     neighbor.calculateF();
                     neighbor.parent = current; // Set the parent to reconstruct the path
 
-                    // Debug: Parent assignment
+                    // Debug: Parent assignment and tentativeG value
                     System.out.println("Setting parent of (" + neighbor.x + ", " + neighbor.y + ") to (" + current.x + ", " + current.y + ")");
+                    System.out.println("Tentative G value for (" + neighbor.x + ", " + neighbor.y + "): " + tentativeG);
 
                     // Add the neighbor to the open set if it's not already there
                     if (!openSet.contains(neighbor)) {
@@ -72,11 +73,11 @@ public class AStar {
     private static List<Node> getNeighbors(Node node, List<Node> allNodes, MazePanel mazePanel) {
         List<Node> neighbors = new ArrayList<>();
         int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Right, Down, Left, Up
-    
+
         for (int[] dir : directions) {
             int newX = node.x + dir[0];
             int newY = node.y + dir[1];
-    
+
             // Check if the new position is within bounds
             if (newX >= 0 && newX < mazePanel.getRows() && newY >= 0 && newY < mazePanel.getCols()) {
                 Node neighbor = findNode(allNodes, newX, newY);
@@ -84,12 +85,18 @@ public class AStar {
                     neighbors.add(neighbor);
                     // Debug: Neighbor added
                     System.out.println("Neighbor added: (" + neighbor.x + ", " + neighbor.y + ")");
+                } else if (neighbor != null) {
+                    // Debug: Neighbor is an obstacle
+                    System.out.println("Neighbor is an obstacle: (" + neighbor.x + ", " + neighbor.y + ")");
                 }
+            } else {
+                // Debug: Out-of-bounds neighbor
+                System.out.println("Skipping out-of-bounds neighbor: (" + newX + ", " + newY + ")");
             }
         }
         return neighbors;
     }
-    
+
     // Helper method to find a node by its coordinates
     private static Node findNode(List<Node> allNodes, int x, int y) {
         for (Node node : allNodes) {
