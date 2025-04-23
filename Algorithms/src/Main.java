@@ -14,7 +14,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Maze Visualization with Obstacles");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 800); // Adjust frame size for larger grid
+            frame.setSize(1200, 800); // Adjust frame size for larger grid
 
             // Create the MazePanel
             MazePanel mazePanel = new MazePanel(allNodes, start, goal, 10, 10); // Updated grid size
@@ -29,25 +29,25 @@ public class Main {
             });
 
             // Create buttons and add them to the frame
-            JButton aStarButton = new JButton("Start A*");
+            JButton aStarButton = new Button("resources\\StartAStarButtons\\Start A_ button (no hover).png", "resources\\StartAStarButtons\\Start A_ button (hover).png", "resources\\StartAStarButtons\\Start A_ button (click).png");
             aStarButton.addActionListener(_ -> {
                 List<Node> path = AStar.aStar(mazePanel, allNodes);
                 mazePanel.setPath(path);
             });
 
-            JButton dijkstraButton = new JButton("Start Dijkstra");
+            JButton dijkstraButton = new Button("resources\\StartDijkstraButtons\\Start Dijkstra button (no hover).png", "resources\\StartDijkstraButtons\\Start Dijkstra button (hover).png", "resources\\StartDijkstraButtons\\Start Dijkstra button (click).png");
             dijkstraButton.addActionListener(_ -> {
                 List<Node> path = Dijkstra.dijkstra(mazePanel, allNodes);
                 mazePanel.setPath(path);
             });
 
-            JButton resetPathButton = new JButton("Reset Path");
+            JButton resetPathButton = new Button("resources\\ResetPathButtons\\Reset Path button (no hover).png", "resources\\ResetPathButtons\\Reset Path button (hover).png", "resources\\ResetPathButtons\\Reset Path button (click).png");
             resetPathButton.addActionListener(_ -> {
                 mazePanel.setPath(null); // Clear the path only
                 System.out.println("Path cleared, obstacles remain intact.");
             });
 
-            JButton resetObstaclesButton = new JButton("Reset Obstacles");
+            JButton resetObstaclesButton = new Button("resources\\ResetObstaclesButtons\\Reset Obstacles button (no hover).png", "resources\\ResetObstaclesButtons\\Reset Obstacles button (hover).png", "resources\\ResetObstaclesButtons\\Reset Obstacles button (click).png");
             resetObstaclesButton.addActionListener(_ -> {
                 mazePanel.clearObstacles(); // Clear all obstacles
                 System.out.println("All obstacles cleared.");
@@ -55,6 +55,7 @@ public class Main {
 
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout());
+            buttonPanel.setBackground(Color.WHITE);
             buttonPanel.add(actionSelector);
             buttonPanel.add(aStarButton);
             buttonPanel.add(dijkstraButton);
