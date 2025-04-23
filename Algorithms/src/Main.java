@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Main {
@@ -11,6 +9,12 @@ public class Main {
         Node start = allNodes.get(0); // Starting node
         Node goal = allNodes.get(allNodes.size() - 1); // Goal node
 
+        // Set obstacles manually
+        int[][] obstacleCoordinates = {
+            {1, 1}, {1, 2}, {1, 3}, // Row 1 obstacles
+            {2, 3}, {3, 3}, {4, 3}  // Column 3 obstacles
+        };
+
         // Create the JFrame
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Maze Visualization with Obstacles");
@@ -19,23 +23,39 @@ public class Main {
 
             // Create the MazePanel
             MazePanel mazePanel = new MazePanel(allNodes, start, goal, 5, 5);
+            mazePanel.setObstaclesManually(obstacleCoordinates); // Set obstacles in the MazePanel
 
             // Create a button to start the A* algorithm
-            JButton startButton = new JButton("Start A*");
-            startButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Run the A* algorithm
-                    List<Node> path = AStar.aStar(start, goal, allNodes, mazePanel);
-                    mazePanel.setPath(path); // Update the path in the MazePanel
-                    mazePanel.repaint(); // Repaint the panel to show the path
-                }
+            JButton aStarButton = new JButton("Start A*");
+            aStarButton.addActionListener(_ -> {
+                List<Node> path = AStar.aStar(start, goal, allNodes, mazePanel);
+                mazePanel.setPath(path); // Update the path in the MazePanel
+            });
+
+            // Create a button to start Dijkstra's algorithm
+            JButton dijkstraButton = new JButton("Start Dijkstra");
+            dijkstraButton.addActionListener(_ -> {
+                List<Node> path = Dijkstra.dijkstra(start, goal, allNodes, mazePanel);
+                mazePanel.setPath(path); // Update the path in the MazePanel
+            });
+
+            // Create a reset button to clear only the path
+            JButton resetButton = new JButton("Reset");
+            resetButton.addActionListener(_ -> {
+                mazePanel.setPath(null); // Clear the path only
+                System.out.println("Path cleared, obstacles remain intact.");
             });
 
             // Add components to the frame
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new FlowLayout());
+            buttonPanel.add(aStarButton);
+            buttonPanel.add(dijkstraButton);
+            buttonPanel.add(resetButton);
+
             frame.setLayout(new BorderLayout());
             frame.add(mazePanel, BorderLayout.CENTER);
-            frame.add(startButton, BorderLayout.SOUTH);
+            frame.add(buttonPanel, BorderLayout.SOUTH);
 
             frame.setVisible(true);
         });

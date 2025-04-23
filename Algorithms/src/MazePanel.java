@@ -31,6 +31,11 @@ public class MazePanel extends JPanel {
                 // Toggle obstacle, but don't allow start or goal to be obstacles
                 if (!(start.x == x && start.y == y) && !(goal.x == x && goal.y == y)) {
                     obstacles[x][y] = !obstacles[x][y];
+                    Node node = findNode(allNodes, x, y);
+                    if (node != null) {
+                        node.setObstacle(obstacles[x][y]); // Update the Node's obstacle status
+                        System.out.println("Obstacle toggled at: (" + x + ", " + y + ") -> " + obstacles[x][y]);
+                    }
                     repaint();
                 }
             }
@@ -47,6 +52,30 @@ public class MazePanel extends JPanel {
             return true; // Treat out-of-bounds as obstacles
         }
         return obstacles[x][y];
+    }
+
+    public void setObstaclesManually(int[][] obstacleCoordinates) {
+        // Clear existing obstacles
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                obstacles[i][j] = false;
+            }
+        }
+
+        // Set new obstacles
+        for (int[] coord : obstacleCoordinates) {
+            int x = coord[0];
+            int y = coord[1];
+            if (x >= 0 && x < rows && y >= 0 && y < cols) {
+                obstacles[x][y] = true;
+                Node node = findNode(allNodes, x, y);
+                if (node != null) {
+                    node.setObstacle(true); // Update the Node's obstacle status
+                    System.out.println("Obstacle set at: (" + x + ", " + y + ")");
+                }
+            }
+        }
+        repaint();
     }
 
     public int getRows() {
@@ -94,7 +123,18 @@ public class MazePanel extends JPanel {
                 int x = node.x * cellWidth;
                 int y = node.y * cellHeight;
                 g.fillRect(x, y, cellWidth, cellHeight);
+                System.out.println("Path node: (" + node.x + ", " + node.y + ")");
             }
         }
+    }
+
+    // Helper method to find a node by its coordinates
+    private Node findNode(List<Node> allNodes, int x, int y) {
+        for (Node node : allNodes) {
+            if (node.x == x && node.y == y) {
+                return node;
+            }
+        }
+        return null;
     }
 }
