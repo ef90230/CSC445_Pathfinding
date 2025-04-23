@@ -5,6 +5,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         // Create a grid of nodes (10x10 for larger grid)
+        //If you change the grid size, make sure to adjust the MazelPanel constructor accordingly
         List<Node> allNodes = createGrid(10, 10);
         Node start = allNodes.get(0); // Starting node
         Node goal = allNodes.get(allNodes.size() - 1); // Goal node
