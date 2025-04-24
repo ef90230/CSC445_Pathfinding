@@ -3,10 +3,10 @@ import java.awt.*;
 import java.util.List;
 
 public class Main {
+    static int size = 10; // Size of the grid
     public static void main(String[] args) {
-        // Create a grid of nodes (10x10 for larger grid)
-        //If you change the grid size, make sure to adjust the MazePanel constructor accordingly
-        List<Node> allNodes = createGrid(10, 10);
+        // Create a grid of nodes 
+        List<Node> allNodes = createGrid(size, size);
         Node start = allNodes.get(0); // Starting node
         Node goal = allNodes.get(allNodes.size() - 1); // Goal node
 
@@ -17,7 +17,7 @@ public class Main {
             frame.setSize(1200, 800); // Adjust frame size for larger grid
 
             // Create the MazePanel
-            MazePanel mazePanel = new MazePanel(allNodes, start, goal, 10, 10); // Updated grid size
+            MazePanel mazePanel = new MazePanel(allNodes, start, goal, size, size); // Updated grid size
 
             // Create a dropdown menu for selecting actions
             String[] options = {"Place Obstacles", "Set Start", "Set End"};

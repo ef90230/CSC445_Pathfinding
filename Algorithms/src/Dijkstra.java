@@ -128,6 +128,6 @@ public class Dijkstra {
 
     // Distance function (uniform cost)
     private static int distance(Node a, Node b) {
-        return 1; // Modify if edge weights are needed
+        return b.getWeight(); 
     }
 }

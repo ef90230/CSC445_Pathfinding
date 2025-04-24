@@ -3,6 +3,7 @@ public class Node implements Comparable<Node> {
     int g, h, f; // Costs for A* algorithm
     Node parent; // Reference to the parent node for path reconstruction
     boolean isObstacle; // Flag to indicate if the node is an obstacle
+    int weight; // Default weight for the node
 
     public Node(int x, int y) {
         this.x = x;
@@ -12,6 +13,7 @@ public class Node implements Comparable<Node> {
         this.f = Integer.MAX_VALUE; // Initialize f to a large value (infinity)
         this.parent = null;
         this.isObstacle = false; // Default to not being an obstacle
+        this.weight = 1; // Default weight for the node
     }
 
     public int calculateF() {
@@ -27,6 +29,16 @@ public class Node implements Comparable<Node> {
 
     public boolean isObstacle() {
         return isObstacle;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+        // Debug: Log when the weight is updated
+        System.out.println("Node (" + x + ", " + y + ") weight set to: " + weight);
     }
 
     @Override
@@ -55,6 +67,7 @@ public class Node implements Comparable<Node> {
                 ", g=" + g +
                 ", h=" + h +
                 ", f=" + f +
+                ", weight=" + weight +
                 ", isObstacle=" + isObstacle +
                 ")";
     }
