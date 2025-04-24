@@ -19,16 +19,41 @@ public class Main {
             // Create the MazePanel
             MazePanel mazePanel = new MazePanel(allNodes, start, goal, size, size); // Updated grid size
 
-            // Create a dropdown menu for selecting actions
-            String[] options = {"Place Obstacles", "Set Start", "Set End"};
-            JComboBox<String> actionSelector = new JComboBox<>(options);
-            actionSelector.addActionListener(_ -> {
-                String selectedAction = (String) actionSelector.getSelectedItem();
-                mazePanel.setAction(selectedAction); // Update the action in MazePanel
-                System.out.println("Selected action: " + selectedAction);
+            // Create buttons and add them to the frame
+            JButton setStartButton = new Button("resources\\SetStartButtons\\Set Start button (no hover).png", "resources\\SetStartButtons\\Set Start button (hover).png", "resources\\SetStartButtons\\Set Start button (click).png");
+            setStartButton.setDisabledIcon(new ImageIcon("resources\\SetStartButtons\\Set Start button (in use).png"));
+
+            JButton setEndButton = new Button("resources\\SetEndButtons\\Set End button (no hover).png", "resources\\SetEndButtons\\Set End button (hover).png", "resources\\SetEndButtons\\Set End button (click).png");
+            setEndButton.setDisabledIcon(new ImageIcon("resources\\SetEndButtons\\Set End button (in use).png"));
+
+            JButton setObstaclesButton = new Button("resources\\SetObstaclesButtons\\Set Obstacle button (no hover).png", "resources\\SetObstaclesButtons\\Set Obstacle button (hover).png", "resources\\SetObstaclesButtons\\Set Obstacle button (click).png");
+            setObstaclesButton.setDisabledIcon(new ImageIcon("resources\\SetObstaclesButtons\\Set Obstacle button (in use).png"));
+
+            JButton setWeightsButton = new Button("resources\\SetWeightButtons\\Set Weights button (no hover).png", "resources\\SetWeightButtons\\Set Weights button (hover).png", "resources\\SetWeightButtons\\Set Weights button (click).png");
+            setWeightsButton.setDisabledIcon(new ImageIcon("resources\\SetWeightButtons\\Set Weights button (in use).png"));
+
+            setStartButton.addActionListener(_ -> {
+                mazePanel.setAction("Set Start"); // Update the action in MazePanel
+                System.out.println("Selected action: Set Start");
+                setStartButton.setEnabled(false);
+                setEndButton.setEnabled(true);
+                setObstaclesButton.setEnabled(true);
+            });
+            setEndButton.addActionListener(_ -> {
+                mazePanel.setAction("Set End"); // Update the action in MazePanel
+                System.out.println("Selected action: Set End");
+                setStartButton.setEnabled(true);
+                setEndButton.setEnabled(false);
+                setObstaclesButton.setEnabled(true);
+            });
+            setObstaclesButton.addActionListener(_ -> {
+                mazePanel.setAction("Place Obstacles"); // Update the action in MazePanel
+                System.out.println("Selected action: Place Obstacles");
+                setStartButton.setEnabled(true);
+                setEndButton.setEnabled(true);
+                setObstaclesButton.setEnabled(false);
             });
 
-            // Create buttons and add them to the frame
             JButton aStarButton = new Button("resources\\StartAStarButtons\\Start A_ button (no hover).png", "resources\\StartAStarButtons\\Start A_ button (hover).png", "resources\\StartAStarButtons\\Start A_ button (click).png");
             aStarButton.addActionListener(_ -> {
                 List<Node> path = AStar.aStar(mazePanel, allNodes);
@@ -56,11 +81,15 @@ public class Main {
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout());
             buttonPanel.setBackground(Color.WHITE);
-            buttonPanel.add(actionSelector);
+            buttonPanel.add(setObstaclesButton);
+            buttonPanel.add(setStartButton);
+            buttonPanel.add(setEndButton);
+            buttonPanel.add(setWeightsButton);
             buttonPanel.add(aStarButton);
             buttonPanel.add(dijkstraButton);
             buttonPanel.add(resetPathButton);
             buttonPanel.add(resetObstaclesButton);
+            setObstaclesButton.setEnabled(false);
 
             frame.setLayout(new BorderLayout());
             frame.add(mazePanel, BorderLayout.CENTER);
