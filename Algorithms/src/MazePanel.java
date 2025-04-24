@@ -180,4 +180,19 @@ public class MazePanel extends JPanel {
     public Node getGoal() {
         return goal;
     }
+
+    public void highlightNode(Node node) {
+        Graphics g = getGraphics();
+        if (g != null) {
+            int cellWidth = getWidth() / cols;
+            int cellHeight = getHeight() / rows;
+            int x = node.x * cellWidth;
+            int y = node.y * cellHeight;
+    
+            g.setColor(Color.YELLOW);
+            g.fillRect(x, y, cellWidth, cellHeight);
+            g.setColor(Color.BLACK);
+            g.drawRect(x, y, cellWidth, cellHeight);
+        }
+    }
 }

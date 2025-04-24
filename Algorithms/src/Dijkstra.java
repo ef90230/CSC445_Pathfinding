@@ -21,6 +21,17 @@ public class Dijkstra {
         while (!openSet.isEmpty()) {
             Node current = openSet.poll();
 
+            // Highlight the current node being processed
+            mazePanel.highlightNode(current);
+            mazePanel.repaint();
+
+            // Add a delay to slow down the algorithm
+            try {
+                Thread.sleep(100); // 100 milliseconds delay
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             // Debug: Current node being processed
             System.out.println("Processing node: (" + current.x + ", " + current.y + ")");
 
