@@ -135,6 +135,13 @@ public class MazePanel extends JPanel {
         repaint();
     }
 
+    public void clearWeights() {
+        for (Node node : allNodes) {
+            node.setWeight(1);;
+        }
+        repaint();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -160,7 +167,7 @@ public class MazePanel extends JPanel {
             // Display the weight if it's not 1
             if (node.getWeight() != 1) {
                 g.setColor(Color.BLACK);
-                g.setFont(new Font("Arial", Font.BOLD, 12)); // Set font for weight text
+                g.setFont(new Font("Arial", Font.BOLD, 24)); // Set font for weight text
                 String weightText = String.valueOf(node.getWeight());
                 int textWidth = g.getFontMetrics().stringWidth(weightText);
                 int textHeight = g.getFontMetrics().getHeight();

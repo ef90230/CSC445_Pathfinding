@@ -14,7 +14,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Maze Visualization with Obstacles");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1200, 800); // Adjust frame size for larger grid
+            frame.setSize(1500, 800); // Adjust frame size for larger grid
 
             // Create the MazePanel
             MazePanel mazePanel = new MazePanel(allNodes, start, goal, size, size); // Updated grid size
@@ -89,6 +89,12 @@ public class Main {
                 System.out.println("All obstacles cleared.");
             });
 
+            JButton resetWeightsButton = new Button("resources\\ResetWeightsButtons\\Reset Weights button (no hover).png", "resources\\ResetWeightsButtons\\Reset Weights button (hover).png", "resources\\ResetWeightsButtons\\Reset Weights button (click).png");
+            resetWeightsButton.addActionListener(a -> {
+                mazePanel.clearWeights();
+                System.out.println("All weights reset to 1.");
+            });
+
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout());
             buttonPanel.setBackground(Color.WHITE);
@@ -100,6 +106,7 @@ public class Main {
             buttonPanel.add(dijkstraButton);
             buttonPanel.add(resetPathButton);
             buttonPanel.add(resetObstaclesButton);
+            buttonPanel.add(resetWeightsButton);
             setObstaclesButton.setEnabled(false);
 
             frame.setLayout(new BorderLayout());
