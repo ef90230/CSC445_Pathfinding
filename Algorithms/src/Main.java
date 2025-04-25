@@ -32,7 +32,7 @@ public class Main {
             JButton setWeightsButton = new Button("resources\\SetWeightButtons\\Set Weights button (no hover).png", "resources\\SetWeightButtons\\Set Weights button (hover).png", "resources\\SetWeightButtons\\Set Weights button (click).png");
             setWeightsButton.setDisabledIcon(new ImageIcon("resources\\SetWeightButtons\\Set Weights button (in use).png"));
 
-            setStartButton.addActionListener(_ -> {
+            setStartButton.addActionListener(a -> {
                 mazePanel.setAction("Set Start"); // Update the action in MazePanel
                 System.out.println("Selected action: Set Start");
                 setStartButton.setEnabled(false);
@@ -40,7 +40,7 @@ public class Main {
                 setObstaclesButton.setEnabled(true);
                 setWeightsButton.setEnabled(true); // Enable the "Set Weights" button
             });
-            setEndButton.addActionListener(_ -> {
+            setEndButton.addActionListener(a -> {
                 mazePanel.setAction("Set End"); // Update the action in MazePanel
                 System.out.println("Selected action: Set End");
                 setStartButton.setEnabled(true);
@@ -48,7 +48,7 @@ public class Main {
                 setObstaclesButton.setEnabled(true);
                 setWeightsButton.setEnabled(true); // Enable the "Set Weights" button
             });
-            setObstaclesButton.addActionListener(_ -> {
+            setObstaclesButton.addActionListener(a -> {
                 mazePanel.setAction("Place Obstacles"); // Update the action in MazePanel
                 System.out.println("Selected action: Place Obstacles");
                 setStartButton.setEnabled(true);
@@ -56,7 +56,7 @@ public class Main {
                 setObstaclesButton.setEnabled(false);
                 setWeightsButton.setEnabled(true); // Enable the "Set Weights" button
             });
-            setWeightsButton.addActionListener(_ -> {
+            setWeightsButton.addActionListener(a -> {
                 mazePanel.setAction("Set Weight"); // Update the action in MazePanel
                 System.out.println("Selected action: Set Weight");
                 setStartButton.setEnabled(true);
@@ -66,25 +66,25 @@ public class Main {
             });
 
             JButton aStarButton = new Button("resources\\StartAStarButtons\\Start A_ button (no hover).png", "resources\\StartAStarButtons\\Start A_ button (hover).png", "resources\\StartAStarButtons\\Start A_ button (click).png");
-            aStarButton.addActionListener(_ -> {
+            aStarButton.addActionListener(a -> {
                 List<Node> path = AStar.aStar(mazePanel, allNodes);
                 mazePanel.setPath(path);
             });
 
             JButton dijkstraButton = new Button("resources\\StartDijkstraButtons\\Start Dijkstra button (no hover).png", "resources\\StartDijkstraButtons\\Start Dijkstra button (hover).png", "resources\\StartDijkstraButtons\\Start Dijkstra button (click).png");
-            dijkstraButton.addActionListener(_ -> {
+            dijkstraButton.addActionListener(a -> {
                 List<Node> path = Dijkstra.dijkstra(mazePanel, allNodes);
                 mazePanel.setPath(path);
             });
 
             JButton resetPathButton = new Button("resources\\ResetPathButtons\\Reset Path button (no hover).png", "resources\\ResetPathButtons\\Reset Path button (hover).png", "resources\\ResetPathButtons\\Reset Path button (click).png");
-            resetPathButton.addActionListener(_ -> {
+            resetPathButton.addActionListener(a -> {
                 mazePanel.setPath(null); // Clear the path only
                 System.out.println("Path cleared, obstacles remain intact.");
             });
 
             JButton resetObstaclesButton = new Button("resources\\ResetObstaclesButtons\\Reset Obstacles button (no hover).png", "resources\\ResetObstaclesButtons\\Reset Obstacles button (hover).png", "resources\\ResetObstaclesButtons\\Reset Obstacles button (click).png");
-            resetObstaclesButton.addActionListener(_ -> {
+            resetObstaclesButton.addActionListener(a -> {
                 mazePanel.clearObstacles(); // Clear all obstacles
                 System.out.println("All obstacles cleared.");
             });
