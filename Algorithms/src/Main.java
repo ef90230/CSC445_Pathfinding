@@ -38,6 +38,7 @@ public class Main {
                 setStartButton.setEnabled(false);
                 setEndButton.setEnabled(true);
                 setObstaclesButton.setEnabled(true);
+                setWeightsButton.setEnabled(true); // Enable the "Set Weights" button
             });
             setEndButton.addActionListener(_ -> {
                 mazePanel.setAction("Set End"); // Update the action in MazePanel
@@ -45,6 +46,7 @@ public class Main {
                 setStartButton.setEnabled(true);
                 setEndButton.setEnabled(false);
                 setObstaclesButton.setEnabled(true);
+                setWeightsButton.setEnabled(true); // Enable the "Set Weights" button
             });
             setObstaclesButton.addActionListener(_ -> {
                 mazePanel.setAction("Place Obstacles"); // Update the action in MazePanel
@@ -52,6 +54,15 @@ public class Main {
                 setStartButton.setEnabled(true);
                 setEndButton.setEnabled(true);
                 setObstaclesButton.setEnabled(false);
+                setWeightsButton.setEnabled(true); // Enable the "Set Weights" button
+            });
+            setWeightsButton.addActionListener(_ -> {
+                mazePanel.setAction("Set Weight"); // Update the action in MazePanel
+                System.out.println("Selected action: Set Weight");
+                setStartButton.setEnabled(true);
+                setEndButton.setEnabled(true);
+                setObstaclesButton.setEnabled(true);
+                setWeightsButton.setEnabled(false); // Disable the "Set Weight" button
             });
 
             JButton aStarButton = new Button("resources\\StartAStarButtons\\Start A_ button (no hover).png", "resources\\StartAStarButtons\\Start A_ button (hover).png", "resources\\StartAStarButtons\\Start A_ button (click).png");

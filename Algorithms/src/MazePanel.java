@@ -57,6 +57,26 @@ public class MazePanel extends JPanel {
                                 repaint();
                             }
                             break;
+                            case "Set Weight":
+                            Node node = findNode(allNodes, x, y);
+                            if (node != null && !obstacles[x][y]) {
+                                String input = JOptionPane.showInputDialog(MazePanel.this, "Enter weight for node (" + x + ", " + y + "):", "Set Weight", JOptionPane.PLAIN_MESSAGE);
+                                if (input != null) {
+                                    try {
+                                        int weight = Integer.parseInt(input);
+                                        if (weight > 0) {
+                                            node.setWeight(weight);
+                                            System.out.println("Weight set for node (" + x + ", " + y + "): " + weight);
+                                            repaint();
+                                        } else {
+                                            JOptionPane.showMessageDialog(MazePanel.this, "Weight must be greater than 0.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                                        }
+                                    } catch (NumberFormatException ex) {
+                                        JOptionPane.showMessageDialog(MazePanel.this, "Invalid weight. Please enter a valid number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                                    }
+                                }
+                            }
+                            break;
                     }
                 }
             }
@@ -136,6 +156,16 @@ public class MazePanel extends JPanel {
 
             g.setColor(Color.BLACK);
             g.drawRect(x, y, cellWidth, cellHeight);
+
+            // Display the weight if it's not 1
+            if (node.getWeight() != 1) {
+                g.setColor(Color.BLACK);
+                g.setFont(new Font("Arial", Font.BOLD, 12)); // Set font for weight text
+                String weightText = String.valueOf(node.getWeight());
+                int textWidth = g.getFontMetrics().stringWidth(weightText);
+                int textHeight = g.getFontMetrics().getHeight();
+                g.drawString(weightText, x + (cellWidth - textWidth) / 2, y + (cellHeight + textHeight) / 2 - 4);
+            }
         }
 
         // Highlight start and goal
